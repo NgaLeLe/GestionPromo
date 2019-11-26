@@ -135,7 +135,7 @@ public class Promo {
 		if (tmpProm >= 0) {
 			for (Apprenant p : listPromo.get(tmpProm).listApprenant) {
 				if (p.getNom().toUpperCase().contains(pNom.toUpperCase().trim()) == true
-						&& p.getPrenom().toUpperCase().contains(pPrenom.toUpperCase().trim())) {
+						&& p.getPrenom().toUpperCase().contains(pPrenom.toUpperCase().trim()) == true) {
 					p.setJourAbsent(pDay, pMonth);
 					return;
 				}
@@ -144,4 +144,28 @@ public class Promo {
 			System.out.println("On n'a pas trouvé le promo qui a cet apprenant");
 		}
 	}
+	public static int idApprenant(int pIdPromo, String pNom, String pPrenom) {
+		int idAppr = -1;
+		for (Apprenant p : listPromo.get(pIdPromo).listApprenant) {
+			if (p.getNom().toUpperCase().contains(pNom.toUpperCase().trim()) == true
+					&& p.getPrenom().toUpperCase().contains(pPrenom.toUpperCase().trim()) == true) {
+				idAppr = listPromo.get(pIdPromo).listApprenant.indexOf(p);
+			}}
+			return idAppr;
+	}
+	
+public static void statusAbsence(String pNom, String pPrenom) {
+	int tmpNbJour, tmpId, tmpProm = idPromoApprenant(pNom, pPrenom);
+	if (tmpProm >= 0) { tmpId = idApprenant(tmpProm, pNom, pPrenom);
+	if (tmpId >= 0) {
+	
+	tmpNbJour = listPromo.get(tmpProm).listApprenant.get(tmpId).getJourAbsent().size();
+	
+	if (tmpNbJour >= 0.1 * listPromo.get(tmpProm).getDureeEffecture()) {
+		System.out.println("ALERT! Nombre jours d'absence est au dela 10% de jour effectué.");
+	} else {System.out.println("Vous avez " + tmpNbJour + "jours d'absence.");
+	}
+}
+}}
+
 }

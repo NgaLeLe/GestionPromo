@@ -132,6 +132,7 @@ public class Execute {
 		System.out.println("Ajouter ");
 		System.out.println("Supprimer ");
 		System.out.println("Afficher");
+		System.out.println("Status apprenant");
 		System.out.println("Choisir ???");
 		tchoix = input.nextLine();
 		tchoix = tchoix.trim().toLowerCase();
@@ -184,7 +185,11 @@ public class Execute {
 			Apprenant.afficherApprenant();
 			return;
 		} else if (tchoix.contains("sta")) {
-			//
+			System.out.print("Nom = ");
+			pNom = input.nextLine();
+			System.out.print("Prenom = ");
+			pPrenom = input.nextLine();
+			Promo.statusAbsence(pNom, pPrenom);
 		} else {
 			return;
 		}
