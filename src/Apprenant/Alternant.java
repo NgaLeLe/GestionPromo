@@ -38,7 +38,7 @@ public class Alternant extends Apprenant {
 
 	@Override
 	public String toString() {
-		return super.toString() + "Alternant" + entreprise + "\t" + salaire + "";
+		return super.toString() + "\t" + "Alternant" + entreprise + "\t" + salaire + "\n";
 	}
 
 }

@@ -72,12 +72,13 @@ public class Execute {
 		System.out.println("2. Changer nombre jour effectue d'un promo");
 		System.out.println("3. Absence d'un apprenant");
 		System.out.println("4. Retard d'un apprenant ");
-		System.out.println("5. Afficher promo ");
+		System.out.println("5. Afficher les promo ");
+		System.out.println("6. Vérifier retard/absence d'un apprenant");
 		System.out.println("Choisir ???");
 		tchoix = input.nextLine();
 		tchoix = tchoix.trim().toLowerCase();
 		if (tchoix.contains("ajo") || tchoix.contains("1")) {
-			System.out.println("ID promo");
+			System.out.print("ID promo veut ajouter: ");
 			tIdPromo = Integer.parseInt(input.nextLine());
 			Promo.ajouterListAprrenant(tIdPromo, input);
 			System.out.println("Ajouté");
@@ -110,7 +111,7 @@ public class Execute {
 			pMonth = Integer.parseInt(input.nextLine());
 			Promo.ajouterJourAbsence(pNom, pPrenom, pDay, pMonth);
 			return;
-		} else if (tchoix.contains("re") || tchoix.contains("4")) { // j'ajoute nombre de minutes tardes
+		} else if (tchoix.contains("ret") || tchoix.contains("4")) { // j'ajoute nombre de minutes tardes
 			System.out.println("Saisie apprenant et nombre de minutes retards: ");
 			System.out.print("Nom = ");
 			pNom = input.nextLine();
@@ -119,6 +120,15 @@ public class Execute {
 			System.out.print("combien de minute tarde = ");
 			pMinute = Integer.parseInt(input.nextLine());
 			Promo.ajouterMinuteRetard(pNom, pPrenom, pMinute);
+			return;
+		} else if (tchoix.contains("ve") || tchoix.contains("6")) { // j'affiche les absences/retards d'un apprenant
+			System.out.println("Saisie apprenant que voulez vérifier ");
+			System.out.print("Nom = ");
+			pNom = input.nextLine();
+			System.out.print("Prenom = ");
+			pPrenom = input.nextLine();
+			Promo.statusAbsence(pNom, pPrenom); // j'appelle méthode de vérification les absences
+			Promo.statusRetard(pNom, pPrenom); // appéller la méthode de vérification les retards
 			return;
 		} else {
 			return;

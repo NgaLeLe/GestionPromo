@@ -40,7 +40,7 @@ public class Stagiaire extends Apprenant {
 
 	@Override
 	public String toString() {
-		return super.toString() + "Stagiaire\t" + typeAllocation + "\t" + montant + "";
+		return super.toString() + "\tStagiaire\t" + typeAllocation + "\t" + montant + "\n";
 	}
 
 }

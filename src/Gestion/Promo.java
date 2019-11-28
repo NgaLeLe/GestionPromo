@@ -59,10 +59,11 @@ public class Promo {
 	@Override
 	public String toString() {
 		if (this.listApprenant != null) {
-			return "NOM : " + this.nomPromo + "\n Nombre de jours : " + this.dureeTotal + "\n Durée effecturé : "
-					+ this.dureeEffecture + "\n Liste d'apprenants \n" + this.listApprenant.toString();
+			return "---NOM PROMO : " + this.nomPromo.toUpperCase() + "\n---DUREE : " + this.dureeTotal
+					+ "\n EFFECTUEE : " + this.dureeEffecture + "\n LISTE D'APPRENANT \n"
+					+ this.getListApprenant().toString();
 		} else {
-			return "NOM : " + this.nomPromo + "\n Nombre de jours : " + this.dureeTotal + "\n Durée effecturé : "
+			return "---NOM : " + this.nomPromo.toUpperCase() + "\n DUREE : " + this.dureeTotal + "\n EFFECTUEE : "
 					+ this.dureeEffecture + "\n";
 		}
 	}
@@ -94,6 +95,8 @@ public class Promo {
 		}
 	}
 
+	// je veux récupérer l'index de promo dans lequel l'apprenant (qui a nom &
+	// prénom) est/ s'incrit.
 	public static int idPromoApprenant(String pNom, String pPrenom) {
 		int idPromo = -1;
 		ArrayList<Apprenant> tmpList = new ArrayList<Apprenant>();
@@ -114,16 +117,13 @@ public class Promo {
 
 	public static void ajouterMinuteRetard(String pNom, String pPrenom, int pMinute) {
 		int tmpProm = idPromoApprenant(pNom, pPrenom);
+		int tmpIdApprenant;
 		System.out.println("pNom" + pNom + "pPrenom" + pPrenom);
 		if (tmpProm >= 0) {
-			System.out.println("LIST" + listPromo.get(tmpProm).listApprenant);
-			for (Apprenant p : listPromo.get(tmpProm).listApprenant) {
-				if (p.getNom().trim().equalsIgnoreCase(pNom.trim()) == true
-						&& p.getPrenom().trim().equalsIgnoreCase(pPrenom.trim()) == true) {
-					p.setNnMinuteRetard(pMinute);
-					return;
-				}
-			}
+			tmpIdApprenant = idApprenant(tmpProm, pNom, pPrenom);
+			listPromo.get(tmpProm).listApprenant.get(tmpIdApprenant).setNnMinuteRetard(pMinute);
+			System.out.println("Vous venez de saisir " + pMinute + "mn retard pour apprenant " + pNom + " " + pPrenom);
+			return;
 		} else {
 			System.out.println("On n'a pas trouvé le promo qui a cet apprenant");
 		}
@@ -131,41 +131,57 @@ public class Promo {
 
 	public static void ajouterJourAbsence(String pNom, String pPrenom, int pDay, int pMonth) {
 		int tmpProm = idPromoApprenant(pNom, pPrenom);
-
+		int tmpIdApprenant;
 		if (tmpProm >= 0) {
-			for (Apprenant p : listPromo.get(tmpProm).listApprenant) {
-				if (p.getNom().toUpperCase().contains(pNom.toUpperCase().trim()) == true
-						&& p.getPrenom().toUpperCase().contains(pPrenom.toUpperCase().trim()) == true) {
-					p.setJourAbsent(pDay, pMonth);
-					return;
-				}
-			}
+			tmpIdApprenant = idApprenant(tmpProm, pNom, pPrenom);
+			listPromo.get(tmpProm).listApprenant.get(tmpIdApprenant).setJourAbsent(pDay, pMonth);
+			return;
 		} else {
 			System.out.println("On n'a pas trouvé le promo qui a cet apprenant");
 		}
 	}
+
+//chercher id d'apprenant qui appartient pNom et pPrénom dans un promo pIdPromo 
 	public static int idApprenant(int pIdPromo, String pNom, String pPrenom) {
 		int idAppr = -1;
 		for (Apprenant p : listPromo.get(pIdPromo).listApprenant) {
 			if (p.getNom().toUpperCase().contains(pNom.toUpperCase().trim()) == true
 					&& p.getPrenom().toUpperCase().contains(pPrenom.toUpperCase().trim()) == true) {
 				idAppr = listPromo.get(pIdPromo).listApprenant.indexOf(p);
-			}}
-			return idAppr;
+			}
+		}
+		return idAppr;
 	}
-	
-public static void statusAbsence(String pNom, String pPrenom) {
-	int tmpNbJour, tmpId, tmpProm = idPromoApprenant(pNom, pPrenom);
-	if (tmpProm >= 0) { tmpId = idApprenant(tmpProm, pNom, pPrenom);
-	if (tmpId >= 0) {
-	
-	tmpNbJour = listPromo.get(tmpProm).listApprenant.get(tmpId).getJourAbsent().size();
-	
-	if (tmpNbJour >= 0.1 * listPromo.get(tmpProm).getDureeEffecture()) {
-		System.out.println("ALERT! Nombre jours d'absence est au dela 10% de jour effectué.");
-	} else {System.out.println("Vous avez " + tmpNbJour + "jours d'absence.");
-	}
-}
-}}
 
+//afficher les absences d'un apprenant
+	public static void statusAbsence(String pNom, String pPrenom) {
+		int tmpNbJour, tmpIdApprenant, tmpProm = idPromoApprenant(pNom, pPrenom);
+		if (tmpProm >= 0) {
+			tmpIdApprenant = idApprenant(tmpProm, pNom, pPrenom);
+			if (tmpIdApprenant >= 0) {
+				tmpNbJour = listPromo.get(tmpProm).listApprenant.get(tmpIdApprenant).getJourAbsent().size();
+				if (tmpNbJour >= 0.1 * listPromo.get(tmpProm).getDureeEffecture()) {
+					System.out.println("ALERT! Nombre jours d'absence est au dela 10% de jour effectué.");
+				} else {
+					System.out.println("Vous avez " + tmpNbJour + "jours d'absence.");
+				}
+			}
+		}
+	}
+
+//je vérifie les retards d'un apprenants
+	public static void statusRetard(String pNom, String pPrenom) {
+		int tmpNbMinute, tmpIdApprenant, tmpProm = idPromoApprenant(pNom, pPrenom);
+		if (tmpProm >= 0) {
+			tmpIdApprenant = idApprenant(tmpProm, pNom, pPrenom);
+			if (tmpIdApprenant >= 0) {
+				tmpNbMinute = listPromo.get(tmpProm).listApprenant.get(tmpIdApprenant).getNbMinuteRetard();
+				if (tmpNbMinute >= 30) {
+					System.out.println("ALERT! Nombre de minutes retardes cumulées est au-delà 30mn.");
+				} else {
+					System.out.println("Vous avez " + tmpNbMinute + " minutes retardes cumulées.");
+				}
+			}
+		}
+	}
 }

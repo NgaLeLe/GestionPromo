@@ -87,14 +87,14 @@ public class Apprenant {
 	}
 
 	public void setNnMinuteRetard(int nbMinuteRetard) {
-		this.nbMinuteRetard = +nbMinuteRetard;
+		this.nbMinuteRetard = this.nbMinuteRetard + nbMinuteRetard;
 	}
 
 	@Override
 	public String toString() {
 		return nom + "\t" + prenom + "\t" + dateInscription.getDate() + "/" + dateInscription.getMonth() + "/"
 				+ dateInscription.getYear() + "\t" + email + "\t" + telephone + "\t" + jourAbsent + "\t"
-				+ nbMinuteRetard + "\n";
+				+ nbMinuteRetard;
 	}
 
 	// créer une liste d'apprenant pour tets
@@ -141,7 +141,7 @@ public class Apprenant {
 		System.out.println(
 				"ID\tNom   \t Prenom   \t\t   Date     \tEmail   \tTelephone \t Type \tEntreprise\tSal_Allo\tJour absent\tNb minute retard");
 		for (int i = 0; i < list.size(); i++) {
-			System.out.println((i + 1) + "\t" + list.get(i));
+			System.out.println((i + 1) + "\t" + list.get(i).toString());
 		}
 	}
 
